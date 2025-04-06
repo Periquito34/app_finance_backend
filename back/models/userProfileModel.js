@@ -8,9 +8,10 @@ const buildUserProfile = (user, data) => {
       monthlyIncome: data.monthlyIncome,
       birthDate: data.birthDate,
       gender: data.gender,
-      photoURL: user.photoURL || 'default-profile.png'
+      photoURL: user.photoURL || 'default-profile.png',
+      currentBalance: data.currentBalance,
+      createdAt: new Date().toISOString()
     };
   };
   
   module.exports = { buildUserProfile };
-  
