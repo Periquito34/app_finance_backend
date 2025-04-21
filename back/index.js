@@ -9,6 +9,8 @@ const userRoutes = require('./routes/user.routes'); // Si necesitas rutas de usu
 const goalRoutes = require('./routes/goal.routes');
 const expensesRoutes = require('./routes/expenses.routes'); // Si necesitas rutas de gastos
 const fixedExpensesRoutes = require('./routes/fixedExpenses.routes'); // Si necesitas rutas de gastos fijos
+const geminiRoutes = require('./routes/gemini.routes'); // Si necesitas rutas de Gemini
+const incomeRoutes = require('./routes/income.routes'); // Si necesitas rutas de ingresos
 
 
 const app = express();
@@ -25,6 +27,8 @@ app.use('/api/userSetup', userSetUpRoutes); // Si necesitas rutas de configuraci
 app.use('/api/', goalRoutes);
 app.use('/api/', expensesRoutes); // Si necesitas rutas de gastos
 app.use('/api/', fixedExpensesRoutes); // Si necesitas rutas de gastos fijos
+app.use('/api/gemini', geminiRoutes); // Si necesitas rutas de Gemini
+app.use('/api/', incomeRoutes); // Si necesitas rutas de ingresos
 
 
 app.get('/api/hello', (req, res) => {
