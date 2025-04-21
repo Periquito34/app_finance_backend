@@ -76,9 +76,30 @@ const updateGoal = async (req, res) => {
   }
 };
 
+const calculateADM = (income, expenses) => {
+  const adm = parseFloat(income) - parseFloat(expenses);
+  return adm;
+};
+
+const getADMByUser = async (req, res) => {
+  try {
+    const { ingresos, gastos } = req.query;
+    if (ingresos === undefined || gastos === undefined) {
+      return res.status(400).json({ error: 'Se requieren los parámetros de ingresos y gastos.' });
+    }
+    const adm = calculateADM(ingresos, gastos);
+    res.status(200).json({ adm: adm });
+  } catch (error) {
+    console.error('Error al calcular el ADM:', error);
+    res.status(500).json({ error: 'Error al calcular el ADM' });
+  }
+};
+
+
 module.exports = {
   getGoalsByUser,
   createGoal,
   deleteGoal,
-  updateGoal
+  updateGoal,
+  getADMByUser,
 };
