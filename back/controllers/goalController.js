@@ -1,6 +1,7 @@
 // src/controllers/goalController.js
 const { db } = require('../config/firebase');
 const { buildGoal } = require('../models/goals.model');
+const { addMonths, format } = require('date-fns');
 
 // Crear una nueva meta
 const createGoal = async (req, res) => {
@@ -95,6 +96,32 @@ const getADMByUser = async (req, res) => {
   }
 };
 
+const calculateFormattedEstimatedDate = (goalAmount, monthlySaving) => {
+  if (monthlySaving <= 0) {
+    throw new Error('El ahorro mensual debe ser mayor a 0');
+  }
+
+  const monthsNeeded = Math.ceil(goalAmount / monthlySaving);
+  const today = new Date();
+
+  const estimatedDate = addMonths(today, monthsNeeded);
+
+  return format(estimatedDate, 'dd-MM-yyyy');
+};
+
+const getEstimatedDate = async (req, res) => {
+  try {
+    const { goalAmount, monthlySaving } = req.query;
+    if (goalAmount === undefined || monthlySaving === undefined) {
+      return res.status(400).json({ error: 'Se requieren los parámetros de cantidad de meta y ahorro mensual.' });
+    }
+    const estimatedDate = calculateFormattedEstimatedDate(goalAmount, monthlySaving);
+    res.status(200).json({ estimatedDate: estimatedDate });
+  } catch (error) {
+    console.error('Error al calcular la fecha estimada:', error);
+    res.status(500).json({ error: 'Error al calcular la fecha estimada' });
+  }
+};
 
 module.exports = {
   getGoalsByUser,
@@ -102,4 +129,5 @@ module.exports = {
   deleteGoal,
   updateGoal,
   getADMByUser,
+  getEstimatedDate
 };

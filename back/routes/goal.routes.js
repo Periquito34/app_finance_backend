@@ -1,7 +1,7 @@
 // src/routes/goalRoutes.js
 const express = require('express');
 const router = express.Router();
-const { createGoal, getGoalsByUser, deleteGoal, updateGoal, getADMByUser } = require('../controllers/goalController');
+const { createGoal, getGoalsByUser, deleteGoal, updateGoal, getADMByUser, getEstimatedDate } = require('../controllers/goalController');
 
 // Crear nueva meta
 router.post('/goals', createGoal);
@@ -16,5 +16,7 @@ router.delete('/goals/:id', deleteGoal);
 router.put('/goals/:id', updateGoal);
 
 router.get('/adm', getADMByUser)
+
+router.get('/goal/calculate-minimum-date', getEstimatedDate);
 
 module.exports = router;
