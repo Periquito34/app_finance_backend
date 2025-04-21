@@ -35,7 +35,34 @@ const getFixedExpensesByUser = async (req, res) => {
     }
   };
 
+  const getTotalFixedExpensesByUser = async (req, res) => {
+    try {
+      const uid = req.params.uid;
+  
+      const snapshot = await db.collection('gastos_fijos')
+        .where('uid', '==', uid)
+        .get();
+  
+      let total = 0;
+  
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const amount = data.amount || 0;
+        const recurrence = data.recurrence || 1; // Si no tiene recurrencia, se asume 1
+        total += amount * recurrence;
+      });
+  
+      res.status(200).json({ total });
+    } catch (error) {
+      console.error('Error getting total fixed expenses:', error);
+      res.status(500).json({ error: 'Failed to calculate total fixed expenses' });
+    }
+  };
+  
+  
+
   module.exports = {
     getFixedExpensesByUser,
     createFixedExpense,
+    getTotalFixedExpensesByUser,
   };
